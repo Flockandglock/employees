@@ -1,10 +1,16 @@
+
+
 import './search-panel.css';
 
-const SearchPanel = () => {
+const SearchPanel = ({filter, setFilter}) => {
+  
+
     return (
         <input type="text"
+                value={filter.query}
+                onChange={e => setFilter({...filter, query: e.target.value})}
                 className="form-control search-input"
-                placeholder="Найти сотрудника"/>
+                placeholder="Найти отца, в смысле сосутрудника..."/>
     )
 }
 

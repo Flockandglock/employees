@@ -15,7 +15,8 @@ const EmployeesAddForm = ({addEmpl}) => {
             name,
             salary,
             increase: false,
-            rise: false
+            rise: false,
+            moreThen1000: salary >= 1000 ? true : false
         };
         postEmpl(newEmpl)
         addEmpl(newEmpl)

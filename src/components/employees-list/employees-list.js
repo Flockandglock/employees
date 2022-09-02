@@ -9,15 +9,15 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 import './employees-list.css';
 
 
-const EmployeesList = () => {
+const EmployeesList = ({empls}) => {
 
-    const {empls, setEmpls, loading} = useContext(EmplsContext);
+    const {setEmpls, loading} = useContext(EmplsContext);
     // const [empls, setEmpls] = useState([]);
 
     // Меняем свойство rise/increase. Колбэком прокидываем в EmployeesListItem.
     const onToggleProp = (id, prop) => {
-        const prevEmpl = (emplss) => {
-            return emplss.map(item => 
+        const prevEmpl = (empls) => {
+            return empls.map(item => 
                     item.id === id ?
                     {
                         ...item,
@@ -40,7 +40,7 @@ const EmployeesList = () => {
     }, []);
     
 
-    const renderEmplList = useCallback((arr) => {
+    const renderEmplList = (arr) => {
         if (arr.length === 0) {
             return <h5>Работников пока нет</h5>
         }
@@ -51,7 +51,7 @@ const EmployeesList = () => {
                                     onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}
                                     removeEmpl={() => removeEmpl(id)} />
         })
-    }, [empls])
+    };
 
     const elements = renderEmplList(empls)
 
