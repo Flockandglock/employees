@@ -1,7 +1,6 @@
-import { useEffect, useState, useContext, useCallback, useMemo } from "react";
+import { useContext, useCallback } from "react";
 import { EmplsContext } from "../../context";
-import { useFetching } from "../../hooks/useFetching";
-import { getAllEmpls } from "../../API/EmplService";
+
 import { deleteEmpl } from "../../API/EmplService";
 
 import EmployeesListItem from "../employees-list-item/employees-list-item";

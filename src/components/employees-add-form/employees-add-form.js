@@ -1,53 +1,64 @@
-import { useState } from 'react';
 import { v4 } from 'uuid';
 import { postEmpl } from '../../API/EmplService';
+import { Field, Formik, ErrorMessage, Form } from 'formik';
+import * as Yup from 'yup';
+
 import './employees-add-form.css';
+
 
 const EmployeesAddForm = ({addEmpl}) => {
 
-    const [name, setName] = useState('');
-    const [salary, setSalary] = useState('');
-
-    const onSubmit = (e) => {
-        e.preventDefault()
+    const onSubmit = (value, actions) => {
         const newEmpl = {
             id: v4(),
-            name,
-            salary,
+            name: value.name,
+            salary: value.salary,
             increase: false,
             rise: false,
-            moreThen1000: salary >= 1000 ? true : false
+            moreThen1000: value.salary >= 1000 ? true : false
         };
+
         postEmpl(newEmpl)
         addEmpl(newEmpl)
-
-        setName('');
-        setSalary('');
+        
+        actions.resetForm({value: {
+            name: '',
+            salary: '',
+        }})
     };
+
 
     return (
         <div className="app-add-form">
             <h3>Добавьте нового сотрудника</h3>
-            <form
-                className="add-form d-flex" onSubmit={onSubmit}>
-                <input type="text"
-                    className="form-control new-post-label"
-                    placeholder="Как его зовут?" 
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    name='name'
-                    />
-                <input type="number"
-                    className="form-control new-post-label"
-                    placeholder="З/П в $?" 
-                    value={salary}
-                    onChange={(e) => setSalary(e.target.value)}
-                    name='salary'
-                    />
-
-                <button type="submit"
-                        className="btn btn-outline-light">Добавить</button>
-            </form>
+            <Formik  initialValues={{ name: '', salary: ''}}
+                    validationSchema = {Yup.object({
+                        name: Yup.string()
+                                .min(2, 'Минимум 2 символа')
+                                .required('Ага щас, ничего не забыл?'),
+                        salary: Yup.number()
+                                    .min(100, 'Не меньше сотки бро, ты же не хочешь бедных работников?!')
+                                    .max(10000, 'Не многовато ли?')
+                                    .required('Ага щас, ничего не забыл?')
+                    })}
+                     onSubmit={(value, actions) => onSubmit(value, actions)}>
+                <Form className="add-form d-flex">
+                    <Field type="text"
+                        className="form-control new-post-label"
+                        placeholder="Как его зовут?" 
+                        name='name'
+                        />
+                    <ErrorMessage name='name'>{msg => <div>{msg}</div>}</ErrorMessage>
+                    <Field type="number"
+                        className="form-control new-post-label"
+                        placeholder="З/П в $?" 
+                        name='salary'
+                        />
+                    <ErrorMessage name='salary'>{msg => <div>{msg}</div>}</ErrorMessage>
+                    <button type="submit"
+                            className="btn btn-outline-light">Добавить</button>
+                </Form>
+            </Formik>
         </div>
     )
 }

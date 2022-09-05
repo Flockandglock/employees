@@ -2,7 +2,7 @@
   "employees": [
     {
       "id": 1,
-      "name": "Alex",
+      "name": "ОЛОЛОШ из 11А",
       "salary": 1000,
       "increase": false,
       "rise": false,
@@ -10,7 +10,7 @@
     },
     {
       "id": 2,
-      "name": "Jhon",
+      "name": "НедоФронтендер после курсов",
       "salary": 2500,
       "increase": false,
       "rise": false,
@@ -19,7 +19,15 @@
     {
       "id": 3,
       "name": "Den",
-      "salary": 500,
+      "salary": 50,
+      "increase": false,
+      "rise": false,
+      "moreThen1000": false
+    },
+    {
+      "id": "76b69638-9a7d-46e6-a91f-e856cf8985f9",
+      "name": "qweq",
+      "salary": 545,
       "increase": false,
       "rise": false,
       "moreThen1000": false
