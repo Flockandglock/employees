@@ -1,30 +1,17 @@
-import { useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
+import { useContext, useCallback } from "react";
+import { EmplsContext } from "../../context";
 
-import { fetchEmpls } from "../../redux/actions";
-import { useSorted } from "../../hooks/useSorted";
-import { togglePropEmpl, emplDeleted, addEmpl } from "../../redux/actions";
-import { useFetching } from "../../hooks/useFetching";
+import { deleteEmpl } from "../../API/EmplService";
 
 import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import './employees-list.css';
 
 
-const EmployeesList = () => {
+const EmployeesList = ({empls}) => {
 
-    const {employees, emplsLoadingStatus} = useSelector(state => state.employees);
-    const {activeFilter, query} = useSelector(state => state.filters);
-    const sortedAndSearchedPost = useSorted(employees, activeFilter, query);
-    
-    const dispatch = useDispatch();
-    const {request} = useFetching()
-
-
-    useEffect(() => {
-        dispatch(fetchEmpls(request))
-    }, [])
+    const {setEmpls, loading} = useContext(EmplsContext);
+    // const [empls, setEmpls] = useState([]);
 
     // Меняем свойство rise/increase. Колбэком прокидываем в EmployeesListItem.
     const onToggleProp = (id, prop) => {
@@ -38,21 +25,17 @@ const EmployeesList = () => {
                     : item
                 )
         };
-        const getPrevEmpl = prevEmpl(employees);
-        dispatch(togglePropEmpl(getPrevEmpl));
-
-        // request("http://localhost:3001/employees", "UPDATE", JSON.stringify(getPrevEmpl))
-        //     .then(dispatch(addEmpl(getPrevEmpl)))
-        //     .catch(err => console.log(err));
-        
+        setEmpls(prevEmpl)
+        // console.log('setEmpls')
     };
 
     // Удаляем работника. Оборачиваем в Callback, чтобы не было перерендеров дочернего компонента. Сперва удаляется с сервера, потом фильтруем сосояние по id
-    const removeEmpl = useCallback((id) => {
-        request(`http://localhost:3001/employees/${id}`, "DELETE")
-            .then(data => console.log(data, 'Deleted'))
-            .then(dispatch(emplDeleted(id)))
-            .catch(err => console.log(err));
+    const removeEmpl = useCallback(async (id) => {
+        await deleteEmpl(id)
+
+        setEmpls(empls => {
+            return empls.filter(item => item.id !== id)
+        })
     }, []);
     
 
@@ -69,12 +52,12 @@ const EmployeesList = () => {
         })
     };
 
-    const elements = renderEmplList(sortedAndSearchedPost);
+    const elements = renderEmplList(empls)
 
 
     return (
             <ul className="app-list list-group">
-                {emplsLoadingStatus === 'loading' ?
+                {loading ?
                     <div>Сотрудники загружаются</div>
                 : elements
                 }

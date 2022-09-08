@@ -1,12 +1,17 @@
 import { v4 } from 'uuid';
-import { postEmpl } from '../../API/EmplService';
+import { useFetching } from '../../hooks/useFetching';
+import { useDispatch } from 'react-redux';
+import {addEmpl} from '../../redux/actions';
 import { Field, Formik, ErrorMessage, Form } from 'formik';
 import * as Yup from 'yup';
 
 import './employees-add-form.css';
 
 
-const EmployeesAddForm = ({addEmpl}) => {
+const EmployeesAddForm = () => {
+
+    const {request} = useFetching();
+    const dispatch = useDispatch();
 
     const onSubmit = (value, actions) => {
         const newEmpl = {
@@ -18,8 +23,9 @@ const EmployeesAddForm = ({addEmpl}) => {
             moreThen1000: value.salary >= 1000 ? true : false
         };
 
-        postEmpl(newEmpl)
-        addEmpl(newEmpl)
+        request("http://localhost:3001/employees", "POST", JSON.stringify(newEmpl))
+            .then(dispatch(addEmpl(newEmpl)))
+            .catch(err => console.log(err));
         
         actions.resetForm({value: {
             name: '',
