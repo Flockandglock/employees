@@ -1,13 +1,19 @@
 import { v4 } from 'uuid';
-import { postEmpl } from '../../API/EmplService';
+import { useFetching } from '../../hooks/useFetching';
+import { useDispatch } from 'react-redux';
+import {addEmployees} from '../employees-list/emplSlice';
 import { Field, Formik, ErrorMessage, Form } from 'formik';
 import * as Yup from 'yup';
 
 import './employees-add-form.css';
 
 
-const EmployeesAddForm = ({addEmpl}) => {
+const EmployeesAddForm = () => {
 
+    const {request} = useFetching();
+    const dispatch = useDispatch();
+
+    // отправляет наш, новы объект, в стейт редакса и на сервер
     const onSubmit = (value, actions) => {
         const newEmpl = {
             id: v4(),
@@ -18,9 +24,11 @@ const EmployeesAddForm = ({addEmpl}) => {
             moreThen1000: value.salary >= 1000 ? true : false
         };
 
-        postEmpl(newEmpl)
-        addEmpl(newEmpl)
+        request("http://localhost:3001/employees", "POST", JSON.stringify(newEmpl))
+            .then(dispatch(addEmployees(newEmpl)))
+            .catch(err => console.log(err));
         
+        // отчищает форму Formik, после отправки данных
         actions.resetForm({value: {
             name: '',
             salary: '',

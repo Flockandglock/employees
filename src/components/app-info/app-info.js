@@ -1,14 +1,15 @@
-import { useContext } from "react";
-import { EmplsContext } from "../../context";
+import { useSelector } from "react-redux";
+
 
 import "./app-info.css";
 
 const AppInfo = () => {
 
-    const {empls, setEmpls, loading} = useContext(EmplsContext);
+    // достаем из стейта нужные нам данные, модифицируем и показываем пользователю
+    const {employees} = useSelector(state => state.employees);
 
-    const allEmpls = empls.length;
-    const willIncrease = empls.filter(empl => empl.increase).length;
+    const allEmpls = employees.length;
+    const willIncrease = employees.filter(empl => empl.increase).length;
 
     return (
         <div className="app-info">

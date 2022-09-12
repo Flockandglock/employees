@@ -14,4 +14,4 @@ export const postEmpl = async (empl) => {
 
 export const deleteEmpl = async (id) => {
     const deleting = await axios.delete(`http://localhost:3001/employees/${id}`)
-}
+};

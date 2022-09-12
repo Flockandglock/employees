@@ -23,14 +23,23 @@
       "increase": false,
       "rise": false,
       "moreThen1000": false
+    }
+  ],
+  "filters": [
+    {
+      "name": "all",
+      "label": "Все сотрудники",
+      "className": "btn"
     },
     {
-      "id": "76b69638-9a7d-46e6-a91f-e856cf8985f9",
-      "name": "qweq",
-      "salary": 545,
-      "increase": false,
-      "rise": false,
-      "moreThen1000": false
+      "name": "rise",
+      "label": "На повышение",
+      "className": "btn"
+    },
+    {
+      "name": "moreThen1000",
+      "label": "З/П больше 1000$",
+      "className": "btn"
     }
   ]
 }
