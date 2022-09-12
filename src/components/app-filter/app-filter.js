@@ -1,7 +1,9 @@
 import { useFetching } from "../../hooks/useFetching";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import {fetchFilters, activeFilterChanged} from '../../redux/actions';
+
+import {fetchFilters} from '../../redux/actions';
+import {activeFilterChanged} from './filterSlice';
 
 import "./app-filter.css";
 

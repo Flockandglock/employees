@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { useFetching } from '../../hooks/useFetching';
 import { useDispatch } from 'react-redux';
-import {addEmpl} from '../../redux/actions';
+import {addEmployees} from '../employees-list/emplSlice';
 import { Field, Formik, ErrorMessage, Form } from 'formik';
 import * as Yup from 'yup';
 
@@ -24,7 +24,7 @@ const EmployeesAddForm = () => {
         };
 
         request("http://localhost:3001/employees", "POST", JSON.stringify(newEmpl))
-            .then(dispatch(addEmpl(newEmpl)))
+            .then(dispatch(addEmployees(newEmpl)))
             .catch(err => console.log(err));
         
         actions.resetForm({value: {

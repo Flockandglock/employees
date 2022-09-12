@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import employees from "../reducers/employees";
-import filters from "../reducers/filter";
+import employees from "../../components/employees-list/emplSlice";
+import filters from "../../components/app-filter/filterSlice";
 
 
 

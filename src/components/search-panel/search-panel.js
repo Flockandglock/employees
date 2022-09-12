@@ -1,4 +1,4 @@
-import { getQuery } from '../../redux/actions';
+import { getQuery } from '../app-filter/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 

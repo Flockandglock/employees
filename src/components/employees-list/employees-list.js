@@ -1,10 +1,9 @@
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
 
 import { fetchEmpls } from "../../redux/actions";
 import { useSorted } from "../../hooks/useSorted";
-import { togglePropEmpl, emplDeleted, addEmpl } from "../../redux/actions";
+import { togglePropEmpl, employeesDeleted } from "../employees-list/emplSlice";
 import { useFetching } from "../../hooks/useFetching";
 
 import EmployeesListItem from "../employees-list-item/employees-list-item";
@@ -51,7 +50,7 @@ const EmployeesList = () => {
     const removeEmpl = useCallback((id) => {
         request(`http://localhost:3001/employees/${id}`, "DELETE")
             .then(data => console.log(data, 'Deleted'))
-            .then(dispatch(emplDeleted(id)))
+            .then(dispatch(employeesDeleted(id)))
             .catch(err => console.log(err));
     }, []);
     

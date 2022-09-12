@@ -1,12 +1,14 @@
 import { createAction } from "@reduxjs/toolkit";
+import {employeesFetching, employeesFetched, employeesFetchingError,} from '../../components/employees-list/emplSlice';
+import {filtersFetching, filtersFetched, filtersFetchingError,} from '../../components/app-filter/filterSlice';
 
 
 // здесь отрабатывает redux-thunk
 export const fetchEmpls = (request) => (dispatch) => {
-    dispatch(emplsFetching());
+    dispatch(employeesFetching());
     request("http://localhost:3001/employees")
-        .then(data => dispatch(emplsFetched(data)))
-        .catch(() => dispatch(emplsFetchingError()))
+        .then(data => dispatch(employeesFetched(data)))
+        .catch(() => dispatch(employeesFetchingError()))
 };
 
 export const fetchFilters = (request) => (dispatch) => {
@@ -15,28 +17,4 @@ export const fetchFilters = (request) => (dispatch) => {
         .then(data => dispatch(filtersFetched(data)))
         .catch(() => dispatch(filtersFetchingError()))
 };
-
-
-export const emplsFetching = createAction('EMPLS_FETCHING');
-
-export const emplsFetched = createAction('EMPLS_FETCHED');
-
-export const emplsFetchingError = createAction('EMPLS_FETCHING_ERROR');
-
-export const togglePropEmpl = createAction('TOGGLE_PROP');
-
-export const addEmpl = createAction('ADD_EMPL');
-
-export const emplDeleted = createAction('EMPL_DELETED');
-
-
-export const filtersFetching = createAction('FILTERS_FETCHING');
-
-export const filtersFetched = createAction('FILTERS_FETCHED');
-
-export const filtersFetchingError = createAction('FILTERS_FETCHING_ERROR');
-
-export const getQuery = createAction('GET_QUERY');
-
-export const activeFilterChanged  = createAction('ACTIVE_FILTER_CHANGED');
 
