@@ -1,9 +1,8 @@
-import { useFetching } from "../../hooks/useFetching";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import {fetchFilters} from '../../redux/actions';
-import {activeFilterChanged} from './filterSlice';
+
+import {activeFilterChanged, fetchFilters} from './filterSlice';
 
 import "./app-filter.css";
 
@@ -12,10 +11,9 @@ const AppFilter = () => {
 
     const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
-    const {request} = useFetching();
 
     useEffect(() => {
-        dispatch(fetchFilters(request))
+        dispatch(fetchFilters());
     }, [])
 
     if (filtersLoadingStatus === 'loading') {

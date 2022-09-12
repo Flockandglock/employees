@@ -1,6 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {useFetching} from '../../hooks/useFetching';
 
+
+// Удаляем uceCallback в хуке useFetching
+export const fetchEmpls = createAsyncThunk(
+    'employees/fetchEmpls',
+    () => {
+        const {request} = useFetching();
+        return request('http://localhost:3001/employees');
+    }
+);
 
 const initialState = {
     employees: [],
@@ -11,16 +20,7 @@ const employeesSlice = createSlice({
     name: 'employees',
     initialState,
     reducers: {
-        employeesFetching: state => {
-            state.emplsLoadingStatus = 'loading';
-        },
-        employeesFetched: (state, actions) => {
-            state.emplsLoadingStatus = 'idle';
-            state.employees = actions.payload;
-        },
-        employeesFetchingError: state => {
-            state.emplsLoadingStatus = 'error'
-        },
+        // теперь эти 3 редьюсера перешли в extraReducers. Удаляем их отсюда, потому что больше мы их нигде не используем
         addEmployees: (state, actions) => {
             state.employees.push(actions.payload);
         },
@@ -30,6 +30,20 @@ const employeesSlice = createSlice({
         togglePropEmpl: (state, actions) => {
             state.employees = actions.payload
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchEmpls.pending, state => {
+                state.emplsLoadingStatus = 'loading';
+            })
+            .addCase(fetchEmpls.fulfilled, (state, actions) => {
+                state.emplsLoadingStatus = 'idle';
+                state.employees = actions.payload;
+            })
+            .addCase(fetchEmpls.rejected, state => {
+                state.emplsLoadingStatus = 'error'
+            })
+            .addDefaultCase(() => {})
     }
 });
 
@@ -37,9 +51,6 @@ const {actions, reducer} = employeesSlice;
 
 export default reducer;
 export const {
-    employeesFetching,
-    employeesFetched,
-    employeesFetchingError,
     addEmployees,
     employeesDeleted,
     togglePropEmpl

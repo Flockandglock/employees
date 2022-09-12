@@ -1,6 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {useFetching} from '../../hooks/useFetching';
 
+
+// Удаляем uceCallback в хуке useFetching
+export const fetchFilters = createAsyncThunk(
+    'filters/fetchFilters',
+    () => {
+        const {request} = useFetching();
+        return request('http://localhost:3001/filters');
+    }
+);
 
 const initialState = {
     filters: [],
@@ -13,22 +22,27 @@ const filterSlice = createSlice({
     name: 'filters',
     initialState,
     reducers: {
-        filtersFetching: state => {
-            state.filtersLoadingStatus = 'loading';
-        },
-        filtersFetched: (state, actions) => {
-            state.filtersLoadingStatus = 'idle';
-            state.filters = actions.payload;
-        },
-        filtersFetchingError: state => {
-            state.filtersLoadingStatus = 'error';
-        },
+        // теперь эти 3 редьюсера перешли в extraReducers. Удаляем их отсюда, потому что больше мы их нигде не используем
         activeFilterChanged: (state, actions) => {
             state.activeFilter = actions.payload;
         },
         getQuery: (state, actions) => {
             state.query = actions.payload;
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchFilters.pending, state => {
+                state.filtersLoadingStatus = 'loading';
+            })
+            .addCase(fetchFilters.fulfilled, (state, actions) => {
+                state.filtersLoadingStatus = 'idle';
+                state.filters = actions.payload;
+            })
+            .addCase(fetchFilters.rejected, state => {
+                state.filtersLoadingStatus = 'error';
+            })
+            .addDefaultCase(() => {})
     }
 });
 
@@ -36,9 +50,6 @@ const {actions, reducer} = filterSlice;
 
 export default reducer;
 export const {
-    filtersFetching,
-    filtersFetched,
-    filtersFetchingError,
     activeFilterChanged,
     getQuery
 } = actions;

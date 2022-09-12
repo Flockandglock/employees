@@ -1,9 +1,8 @@
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchEmpls } from "../../redux/actions";
 import { useSorted } from "../../hooks/useSorted";
-import { togglePropEmpl, employeesDeleted } from "../employees-list/emplSlice";
+import { togglePropEmpl, employeesDeleted, fetchEmpls } from "../employees-list/emplSlice";
 import { useFetching } from "../../hooks/useFetching";
 
 import EmployeesListItem from "../employees-list-item/employees-list-item";
@@ -18,12 +17,12 @@ const EmployeesList = () => {
     const sortedAndSearchedPost = useSorted(employees, activeFilter, query);
     
     const dispatch = useDispatch();
-    const {request} = useFetching()
+    const {request} = useFetching();
 
 
     useEffect(() => {
-        dispatch(fetchEmpls(request))
-    }, [])
+        dispatch(fetchEmpls());
+    }, []);
 
     // Меняем свойство rise/increase. Колбэком прокидываем в EmployeesListItem.
     const onToggleProp = (id, prop) => {
@@ -65,7 +64,7 @@ const EmployeesList = () => {
                                     {...props} 
                                     onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}
                                     removeEmpl={() => removeEmpl(id)} />
-        })
+        });
     };
 
     const elements = renderEmplList(sortedAndSearchedPost);
