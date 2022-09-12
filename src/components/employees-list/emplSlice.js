@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {useFetching} from '../../hooks/useFetching';
 
 
-// Удаляем uceCallback в хуке useFetching
+// Удаляем uceCallback в хуке useFetching. Этак фун-ия возвращает нам промис, который мы обрабатываем в extraReducers
 export const fetchEmpls = createAsyncThunk(
     'employees/fetchEmpls',
     () => {

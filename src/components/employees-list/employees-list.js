@@ -19,13 +19,15 @@ const EmployeesList = () => {
     const dispatch = useDispatch();
     const {request} = useFetching();
 
-
+    // все та же первоначальная загрузка данных в стейт редакса и на сервак
     useEffect(() => {
         dispatch(fetchEmpls());
     }, []);
 
     // Меняем свойство rise/increase. Колбэком прокидываем в EmployeesListItem.
     const onToggleProp = (id, prop) => {
+
+        // эта фун-ия принимает массив с объектами и меняет свойство 1 объекта на противоположное, а остальные объекты остаются неизменными
         const prevEmpl = (empls) => {
             return empls.map(item => 
                     item.id === id ?
@@ -36,6 +38,7 @@ const EmployeesList = () => {
                     : item
                 )
         };
+        // передаем наших работников, а результат работы диспатчим в наш стейт
         const getPrevEmpl = prevEmpl(employees);
         dispatch(togglePropEmpl(getPrevEmpl));
 
@@ -53,7 +56,7 @@ const EmployeesList = () => {
             .catch(err => console.log(err));
     }, []);
     
-
+    // формируем массив наших работников{объетов}
     const renderEmplList = (arr) => {
         if (arr.length === 0) {
             return <h5>Работников пока нет</h5>

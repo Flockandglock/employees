@@ -5,6 +5,7 @@ import "./app-info.css";
 
 const AppInfo = () => {
 
+    // достаем из стейта нужные нам данные, модифицируем и показываем пользователю
     const {employees} = useSelector(state => state.employees);
 
     const allEmpls = employees.length;

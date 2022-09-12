@@ -13,6 +13,7 @@ const EmployeesAddForm = () => {
     const {request} = useFetching();
     const dispatch = useDispatch();
 
+    // отправляет наш, новы объект, в стейт редакса и на сервер
     const onSubmit = (value, actions) => {
         const newEmpl = {
             id: v4(),
@@ -27,6 +28,7 @@ const EmployeesAddForm = () => {
             .then(dispatch(addEmployees(newEmpl)))
             .catch(err => console.log(err));
         
+        // отчищает форму Formik, после отправки данных
         actions.resetForm({value: {
             name: '',
             salary: '',

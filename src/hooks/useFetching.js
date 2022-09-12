@@ -25,6 +25,7 @@ import { useState, useCallback } from "react";
 
 export const useFetching = () => {
 
+    // До создания среза request был обернут в useCallback
     const request = async(url, method = 'GET', body = null, headers = {'Content-Type': 'application/json'}) => {
         try {
             const response = await fetch(url, {method, body, headers});

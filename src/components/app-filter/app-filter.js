@@ -12,16 +12,19 @@ const AppFilter = () => {
     const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
 
+    // превый запрос и загрузка данных в стейт редакса
     useEffect(() => {
         dispatch(fetchFilters());
     }, [])
 
+    // проверяем этап загрузки фильтров
     if (filtersLoadingStatus === 'loading') {
         return <div>Загрузка фильтров</div>
     } else if(filtersLoadingStatus === 'error') {
         return <div>Ошибка загрузки</div>
     }
 
+    // формируем фильтры с нужными классами и слушателями событий
     const renderFilters = (arr) => {
         if (arr.length === 0) {
             return <div>Фильтры не найдены</div>
@@ -29,6 +32,7 @@ const AppFilter = () => {
 
         return arr.map(({name, label, className}) => {
 
+            // проверяем класс активности, по умолчания activeFilter==='all'
             let btnClass = className;
 
             if(activeFilter === name) {
@@ -46,6 +50,7 @@ const AppFilter = () => {
         })
     };
 
+    // вызываем фун-ию, а итог ее работы идет в рендер
     const element = renderFilters(filters);
 
 
@@ -56,6 +61,7 @@ const AppFilter = () => {
     );
 };
 
+export default AppFilter;
 
 // const AppFilter = ({filter, setFilter}) => {
 
@@ -84,4 +90,3 @@ const AppFilter = () => {
 //     )
 // }
 
-export default AppFilter;

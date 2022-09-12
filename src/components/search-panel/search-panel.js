@@ -6,6 +6,7 @@ import './search-panel.css';
 
 const SearchPanel = () => {
   
+    // Здесь мы просто привязываем инпут к нашему стейту и диспачим его
     const {query} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     
